@@ -24,6 +24,25 @@
     gtag('config', 'AW-18440436080');
   </script>
   
+  <!-- Event snippet for Hydepark conversion page
+  In your html page, add the snippet and call gtag_report_conversion when someone clicks on the chosen link or button. -->
+  <script>
+  function gtag_report_conversion(url) {
+    var callback = function () {
+      if (typeof(url) != 'undefined') {
+        window.location = url;
+      }
+    };
+    gtag('event', 'conversion', {
+        'send_to': 'AW-18440436080/dwylCJyxtfUcEPDyitlE',
+        'value': 1.0,
+        'currency': 'EGP',
+        'event_callback': callback
+    });
+    return false;
+  }
+  </script>
+  
   <style>
     .legal-page-wrap {
       padding: 130px 0 80px 0;
@@ -194,7 +213,7 @@
             If you have questions regarding this disclosure, our privacy practices, or would like to discuss current residential opportunities at Hyde Park Developments, please contact our senior advisory desk:
           </p>
           <p>
-            <strong>Phone / WhatsApp:</strong> <a href="https://wa.me/201003565002" target="_blank" rel="noopener noreferrer" style="color: var(--color-gold); font-weight: 600;">+20 100 356 5002</a><br />
+            <strong>Phone / WhatsApp:</strong> <a href="https://wa.me/201003565002" onclick="gtag_report_conversion();" target="_blank" rel="noopener noreferrer" style="color: var(--color-gold); font-weight: 600;">+20 100 356 5002</a><br />
             <strong>Consultancy Desk:</strong> Properties-a — Strategic Real Estate Advisory<br />
             <strong>Official Email / Web:</strong> Properties-a Real Estate Advisory
           </p>

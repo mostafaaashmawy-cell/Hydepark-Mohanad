@@ -178,6 +178,10 @@ document.addEventListener('DOMContentLoaded', () => {
         const result = await response.json();
 
         if (response.status === 200 || result.success) {
+          // Trigger Google Ads conversion tracking
+          if (typeof window.gtag_report_conversion === 'function') {
+            window.gtag_report_conversion();
+          }
           form.reset();
           showToast('Thank you! Your inquiry has been received. Our senior advisor will contact you promptly.');
           if (modalOverlay?.classList.contains('active')) {
@@ -188,6 +192,10 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       } catch (err) {
         console.error('Web3Forms Error:', err);
+        // Trigger Google Ads conversion tracking on fallback
+        if (typeof window.gtag_report_conversion === 'function') {
+          window.gtag_report_conversion();
+        }
         showToast('Thank you! Your request was received. Connecting you to WhatsApp...', false);
         setTimeout(() => {
           window.open(`https://wa.me/${CONFIG.WHATSAPP_PHONE}?text=${encodeURIComponent(`Hello, my name is ${name}. I am interested in ${project}. Phone: ${phone}`)}`, '_blank');
@@ -216,6 +224,14 @@ document.addEventListener('DOMContentLoaded', () => {
     btn.setAttribute('href', `https://wa.me/${CONFIG.WHATSAPP_PHONE}?text=${encodeURIComponent(message)}`);
     btn.setAttribute('target', '_blank');
     btn.setAttribute('rel', 'noopener noreferrer');
+  });
+
+  // 6. Google Ads Conversion Tracking for all WhatsApp Clicks
+  document.addEventListener('click', (e) => {
+    const waLink = e.target.closest('a[href*="wa.me"], a[href*="whatsapp.com"], .btn-whatsapp, .floating-whatsapp');
+    if (waLink && typeof window.gtag_report_conversion === 'function') {
+      window.gtag_report_conversion();
+    }
   });
 
   // Inject spin keyframe animation for loader
