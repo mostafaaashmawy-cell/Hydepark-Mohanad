@@ -4,7 +4,7 @@ High-converting, luxury real estate landing page for **Hyde Park Developments** 
 
 ## Features
 - **Curated Projects Showcase**:
-  - **One Hyde Park**: 2 Minutes from AUC, New Cairo (Starting 6.4M EGP)
+  - **One Hyde Park**: 2 Minutes from AUC, New Cairo (Starting 5.9M EGP)
   - **Sea Shore**: North Coast Ras El Hekma KM 207 (Starting 8.0M EGP)
   - **Hyde Park Central**: Private Gated Sanctuary, New Cairo (Starting 5.9M EGP)
 - **High-End Design**: Obsidian and dark emerald aesthetic, champagne gold accents, glassmorphic UI, responsive layout, and mobile quick-action bar.
