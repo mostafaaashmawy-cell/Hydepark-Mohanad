@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Configuration
   const CONFIG = {
     WHATSAPP_PHONE: '201003565002',
-    WEB3FORMS_ACCESS_KEY: '185210b5-4e86-4947-a507-01ec0754aa27',
+    WEB3FORMS_ACCESS_KEY: '9f6d054c-a955-4ed1-b85d-91c7f8b0a16a',
     DEFAULT_INQUIRY_MSG: 'Hello, I am interested in One Hyde Park New Launch exclusive offer.'
   };
 
