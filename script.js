@@ -7,21 +7,11 @@ document.addEventListener('DOMContentLoaded', () => {
   // Configuration
   const CONFIG = {
     WHATSAPP_PHONE: '201003565002',
-    WEB3FORMS_ACCESS_KEY: '185210b5-4e86-4947-a507-01ec0754aa27', // Default key, configurable
-    DEFAULT_INQUIRY_MSG: 'Hello, I am interested in Hyde Park Developments projects.'
+    WEB3FORMS_ACCESS_KEY: '185210b5-4e86-4947-a507-01ec0754aa27',
+    DEFAULT_INQUIRY_MSG: 'Hello, I am interested in One Hyde Park New Launch exclusive offer.'
   };
 
-  // 1. Header Scroll Shadow Effect
-  const header = document.querySelector('.site-header');
-  window.addEventListener('scroll', () => {
-    if (window.scrollY > 40) {
-      header?.classList.add('scrolled');
-    } else {
-      header?.classList.remove('scrolled');
-    }
-  });
-
-  // 2. Project Filter Tabs
+  // 1. Project Filter Tabs
   const tabButtons = document.querySelectorAll('.tab-btn');
   const projectCards = document.querySelectorAll('.project-card');
 
@@ -44,16 +34,20 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // 3. Modal Dialog Controls
+  // 2. Modal Dialog Controls
   const modalOverlay = document.getElementById('inquiry-modal');
   const modalCloseBtn = document.getElementById('modal-close-btn');
-  const modalProjectSelect = document.getElementById('modal-project');
+  const modalHiddenProject = document.getElementById('modal-project-name');
+  const modalTitle = document.getElementById('modal-title');
   const openModalButtons = document.querySelectorAll('.js-open-brochure-modal');
 
-  function openModal(projectName = '') {
+  function openModal(projectName = 'One Hyde Park — New Launch') {
     if (!modalOverlay) return;
-    if (modalProjectSelect && projectName) {
-      modalProjectSelect.value = projectName;
+    if (modalHiddenProject) {
+      modalHiddenProject.value = projectName;
+    }
+    if (modalTitle && projectName) {
+      modalTitle.textContent = `Request Dossier: ${projectName}`;
     }
     modalOverlay.classList.add('active');
     document.body.style.overflow = 'hidden';
@@ -68,7 +62,7 @@ document.addEventListener('DOMContentLoaded', () => {
   openModalButtons.forEach(btn => {
     btn.addEventListener('click', (e) => {
       e.preventDefault();
-      const proj = btn.getAttribute('data-project') || '';
+      const proj = btn.getAttribute('data-project') || 'One Hyde Park — New Launch';
       openModal(proj);
     });
   });
@@ -91,7 +85,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // 4. Toast Notification Utility
+  // 3. Toast Notification Utility
   function showToast(message, isError = false) {
     let toast = document.getElementById('site-toast');
     if (!toast) {
@@ -110,7 +104,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 4500);
   }
 
-  // 5. Form Submissions via Web3Forms (AJAX)
+  // 4. Form Submissions via Web3Forms (AJAX) — Supports Any Country Code
   const forms = [
     document.getElementById('hero-lead-form'),
     document.getElementById('section-lead-form'),
@@ -126,12 +120,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
       const nameInput = form.querySelector('input[name="name"]');
       const phoneInput = form.querySelector('input[name="phone"]');
-      const projectInput = form.querySelector('select[name="project"]');
+      const projectInput = form.querySelector('input[name="project"]');
       const accessKeyInput = form.querySelector('input[name="access_key"]');
 
       const name = nameInput ? nameInput.value.trim() : '';
       const phone = phoneInput ? phoneInput.value.trim() : '';
-      const project = projectInput ? projectInput.value : 'General Hyde Park Inquiry';
+      const project = (projectInput && projectInput.value.trim()) || 'One Hyde Park - New Launch';
       const accessKey = (accessKeyInput && accessKeyInput.value.trim()) || CONFIG.WEB3FORMS_ACCESS_KEY;
 
       if (!name) {
@@ -140,8 +134,10 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
       }
 
-      if (!phone || phone.length < 8) {
-        showToast('Please enter a valid phone or WhatsApp number.', true);
+      // Allow any country code: simply ensure it has at least 7 digits
+      const digitsOnly = phone.replace(/\D/g, '');
+      if (digitsOnly.length < 7) {
+        showToast('Please enter a valid phone number with country code (e.g. +20, +971, +966, +1).', true);
         phoneInput?.focus();
         return;
       }
@@ -164,6 +160,7 @@ document.addEventListener('DOMContentLoaded', () => {
           name: name,
           phone: phone,
           project: project,
+          campaign: 'One Hyde Park New Launch Exclusive Offer',
           source: 'Hydepark Mohanad Landing Page (Properties-a)',
           page_url: window.location.href,
           timestamp: new Date().toISOString()
@@ -187,12 +184,10 @@ document.addEventListener('DOMContentLoaded', () => {
             setTimeout(closeModal, 1500);
           }
         } else {
-          // Fallback grace
           showToast(result.message || 'Submission completed. We will reach out shortly.');
         }
       } catch (err) {
         console.error('Web3Forms Error:', err);
-        // Fallback message to prevent user frustration
         showToast('Thank you! Your request was received. Connecting you to WhatsApp...', false);
         setTimeout(() => {
           window.open(`https://wa.me/${CONFIG.WHATSAPP_PHONE}?text=${encodeURIComponent(`Hello, my name is ${name}. I am interested in ${project}. Phone: ${phone}`)}`, '_blank');
@@ -206,13 +201,13 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // 6. Dynamic WhatsApp pre-fill links
+  // 5. Dynamic WhatsApp pre-fill links
   const whatsappButtons = document.querySelectorAll('a[data-wa-project]');
   whatsappButtons.forEach(btn => {
     const project = btn.getAttribute('data-wa-project');
     let message = CONFIG.DEFAULT_INQUIRY_MSG;
     if (project === 'one-hyde-park') {
-      message = 'I am interested in One Hyde Park, New Cairo.';
+      message = 'I am interested in One Hyde Park New Launch exclusive offer, New Cairo.';
     } else if (project === 'sea-shore') {
       message = 'I am interested in Sea Shore, North Coast KM 207.';
     } else if (project === 'hyde-park-central') {
